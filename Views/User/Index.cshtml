@@ -1,0 +1,101 @@
+﻿@model List<EAD_project.Models.Login>
+
+@if (Session["user"] == null)
+{
+    Response.Redirect("~/Home/Index");
+}
+
+
+@{
+    Layout = null;
+}
+    <script src="~/Scripts/jquery-1.6.4.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Content/demo.css">
+    <link rel="stylesheet" href="~/Content/style.css">
+    <link rel="stylesheet" href="~/Content/style.css">
+	<link rel="stylesheet" href="~/Content/header-basic.css">
+    <link rel='stylesheet prefetch' href='http://cdn.materialdesignicons.com/1.1.70/css/materialdesignicons.min.css'>
+    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:300'>
+    <link rel="stylesheet" href="~/Content/stylee.css">
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    
+		<header class="header-basic">
+
+			<div class="header-limiter">
+
+				<h1><a href="#">Gup<span>Shup</span></a></h1>
+
+				<nav>
+                    @if(Session["user"] != null){
+					    <a href="~/Home/Index">Logout</a>
+                       <h5> @Session["user"] </h5>
+                    }
+				</nav>
+			</div>
+
+		</header>
+
+
+    <form id="form1" runat="server">
+        <script type="text/javascript">
+            $('#username').change(function () {
+            });
+
+            $(function () {
+                //alert("hu");
+                var Chat = $.connection.myChatHub;
+                Chat.client.addMessage = function (kisko ,name, message) {
+                    //alert(message);
+                    var n = $("#username").val();
+                    var nn = $("#session").val();
+                    
+                    if ($('#session').val() == kisko   ) {
+                        $('#listMessages').append('<li> <b> ' + name + '</b>: ' + message + '</li>');
+                    }
+                    if ($('#session').val() == name) {
+                        $('#listMessages').append('<li> <b> ' + name + '</b>: ' + message + '</li>');
+                    }
+                    };
+
+                $("#SendMessage").click(function () {
+                    Chat.server.send($("#username").val(),$('#session').val(), $('#txtMessage').val());
+                    $('#txtMessage').val("");
+
+                });
+                $.connection.hub.start();
+
+            });
+        </script>
+
+        <div>
+
+            <input type="hidden" id="session" value="@Session["user"]"/>
+            <input type="text" id="txtMessage" />
+            <input type="button" id="SendMessage" value="Send" />
+            <ul id="listMessages">
+            </ul>
+        </div>
+         <select id="username"> 
+            @foreach (var i in Model)
+            { 
+                    <option value="@i.username"> @i.username</option>
+            }
+        </select>
+    </form>
+       
+
+
+</body>
+

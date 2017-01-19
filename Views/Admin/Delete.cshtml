@@ -1,0 +1,40 @@
+﻿@if (Session["user"] == null)
+{
+     Response.Redirect("~/Home/Index");
+}
+@model EAD_project.Models.Login
+@{
+    ViewBag.title = "Delete User";
+}
+
+
+<h1> Delete User </h1>
+<h2>Are You Sure You want To delete ? </h2>
+
+<fieldset>
+    <legend>User</legend>
+
+    <div >
+        
+       Name:  @Model.username
+    </div>
+    
+    <div >
+        Password : @Model.password
+    </div>
+    
+    <div >
+        Email : @Model.email
+    </div>
+    
+    <div >
+        Type : @Model.type
+    </div>
+   
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Admin", "Delete")
+    </p>
+}

@@ -1,0 +1,93 @@
+﻿@model EAD_project.Models.Login
+<body>
+  <div class="login-wrap">
+	<div class="login-html">
+		<input id="tab-1" type="radio" name="tab" class="sign-in" ><label for="tab-1" class="tab"></label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up" checked><label for="tab-2" class="tab">Sign Up</label>
+		<div class="login-form">
+     <script>
+        function checkPass()
+        {
+            var pass = document.getElementById("spass").value;
+            var rpass = document.getElementById("rpass").value;
+            alert(pass);
+            alert(rpass);
+            if(pass === rpasss)
+            {
+                alert("i m in else");
+            }
+            else
+            {
+                alert('Password and Repeat Password must match ');
+                alert("i m in else");
+            }
+        }
+    </script>            
+			<div class="sign-up-htm">
+                <form method="post" >
+				    <div class="group">
+					    <label for="user" class="label">Username</label>
+					    <input id="user" type="text" class="input"  name="username">
+                        @Html.ValidationMessageFor( model => model.username);
+				    </div>
+				    <div class="group">
+					    <label for="pass" class="label">Password</label>
+					    <input id="spass" type="password" class="input" name="password">
+                        @Html.ValidationMessageFor( model => model.username);
+
+				    </div>
+				    <div class="group">
+					    <label for="pass" class="label">Repeat Password</label>
+					    <input id="rpass" type="password" class="input"  name="Rpassword"  required="" onclick="checkPass()">
+				    </div>
+				    <div class="group">
+					    <label for="pass" class="label">Email Address</label>
+					    <input id="email" type="text" class="input"  name="email">
+                        @Html.ValidationMessageFor( model => model.username);
+                        <input type="button"  id="b1" value="Check" />
+                        <div id="checking" style="color:red">Checking...</div>
+                         <div id="result"></div>
+				    </div>
+                    <div class="group">
+					    <label for="pass" class="label">Type</label>
+                        <select class="input" name="type">
+                              <option value="User">User</option>
+                              <option value="Admin">Admin</option>
+                        </select>
+				    </div>
+				    <div class="group">
+					    <input type="submit" class="button" value="Sign up">
+				    </div>
+               </form>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<label for="tab-1">Already Member?</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+  
+     @Scripts.Render("~/bundles/jquery")
+    <script>
+        $(document).ready(function () {
+            $('#checking').hide();
+            $('#b1').click(function () {
+                var userName = $('#email').val();
+                //alert('User Name ='+ userName);
+                $('#checking').show();
+                $.getJSON("/Home/CheckUserName?UserName=" + userName, function (data) {
+                    $('#checking').hide();
+                    if (data) {
+                        $('#result').text("User already exists in database");
+                    }
+                    else {
+                        $('#result').text("User Name is available");
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>

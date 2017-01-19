@@ -1,0 +1,101 @@
+﻿@if (Session["user"] == null)
+{
+     Response.Redirect("~/Home/Index");
+}
+
+@model List<EAD_project.Models.Local>
+<style>
+    .button {
+    background-color: grey;  
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+    a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    -moz-appearance: button;
+    text-decoration: none;
+    color: initial;
+    float:right;
+}
+
+</style>
+<body>
+<div>
+    <a href="~/User/Index " class="button" >For chat</a> 
+</div>
+<br />
+
+
+<div style="padding-left:20px">   
+<h1>Upload Content</h1>
+<br /> 
+<form action="/User/Save" method="post" enctype="multipart/form-data" >
+    <input type="hidden" value="@Session["user"]" name="Username" />
+    <table>
+        <tr>
+            <td>
+                <h4>Content</h4> 
+            </td>
+            <td>
+                <textarea rows="4" cols="50" name="textarea" style="border:2px solid;animation:ease-in">
+
+                </textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Upload Image</h4>
+            </td>
+            <td>
+                <input type="file" name="image" class="button" />
+            </td>
+        </tr>
+        <td>
+            <input class="button" type="submit" value ="ADD Content" />
+        </td>
+    </table>
+</form>
+
+</div>
+
+   <br />
+    <fieldset>
+      
+        @foreach (var i in Model)
+        {
+            
+            if(@i.pic != null && @i.data != null)
+            {
+                <h2>@i.Username Posted </h2>
+            }
+            <p  style="padding-left:1.8em"> @i.data</p>
+      
+            if(@i.pic != null)
+            {
+                <a href="@i.pic"><img src="@i.pic" width="30%" height="30%"   style="padding-left:1.8em" float="left"/> </a> 
+            
+            
+            }            
+            string s =(string)@Session["user"];
+            <h1></h1>
+                if (@i.Username == @s )
+                { 
+                    @Html.ActionLink("Delete Pic", "delete", new { id = i.Id }, new { @class = "button" });
+                    <br /><br /><br />
+                }
+                <hr />
+                
+            }
+        <hr />
+
+        
+    </fieldset>
+    
+</body>
